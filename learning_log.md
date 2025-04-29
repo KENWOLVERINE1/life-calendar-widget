@@ -1,14 +1,14 @@
-#Learning log!:-
+# Learning log!:-
  As the name suggests this is where i will log the learnings and experiences that i have obtained during the journey of creating this wonderful project so that evenyone can access not only my project but also the learnings and experiences as well!!
 
-##Setting up the project:-
+## Setting up the project:-
  I initially started the project by creating a directory under the name life-caledar-widget. I usually create a directory based on the project name in order to initialize it locally and in order to keep track of it 
 
  It is also the best practice to name your project direcotry as the name that is same as your github repository in order prevent confusions and conflicts 
 
->**Note**:I am using a linux environment(Fedora 41) so the following steps and progress  will be related to it and i would suggest you guys to change it according to your environment if you're following this 
+>**Note**: I am using a linux environment(Fedora 41). so, the following steps and progress  will be related to it and i would suggest you guys to change it according to your environment if you're following this 
 
-#Installing required dependencies:-
+## Installing required dependencies:-
 
 1. Since this project is created using `electron` we need `Node.js` in our environment to succesfully run the project(if you have Nodejs already installed in your system well and good if not just follow the steps below:)
 
@@ -55,7 +55,7 @@ console.log("Hello Electron!)
 npm start
 ```
 
-#Setting up git repository
+## Setting up git repository
 1. Initialize a local repository using git(_hoping that all of you guys are having git  installed cause you know it's a required tool for developers_)
  ```sh
 git init 
