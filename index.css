@@ -1,0 +1,41 @@
+body{
+    background-color: rgb(36, 36, 36);
+    color: rgb(255, 255, 255);
+    font-size: medium;
+    padding-left: 7%;
+    padding-right: 5%;
+}
+hr{
+    width: 80%;
+}
+h1,h2{
+    font-family: 'Courier New', Courier, monospace;
+}
+input{
+    border: none;
+    color: white;
+    box-sizing: none;
+    border-bottom: 2px solid white;
+    width: max-content;
+    padding: 9px 20px;
+    margin: 8px 0;
+    text-decoration: none;
+    outline: none;
+    background: transparent;
+    font-size: medium;
+}
+button{
+    width: 150px;
+    height: 55px;
+    background-color: rgb(1, 90, 255);
+    font-size: large;
+    font-family: monospace;
+    border-radius: 5px;
+    border: none;
+    color: white;
+
+}
+
+#form{
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
