@@ -9,10 +9,12 @@
     <center><h1>Life Calendar Widget</h1></center>
     <hr/>
     <br/>
-    <h2>Answer the questions asked below to get your life calender <3</h2>
+    <!--<div id="display"></div>-->
+    <p id="display"></p>
+    <h2 id="h2">Answer the questions asked below to get your life calender <3</h2>
     <br/>
     <br/>
-    <form action="" target="_self" id="form">
+    <form id="form">
       <label for="age">1. Enter your Age</label><br/>
       <input type="number" id="age" name="age"><br/>
       <br/>
@@ -31,8 +33,9 @@
       <input type="number" id="timecommit" name="timecommit"/>
       <br/>
       <br/>
-      <center><button onclick="" type="submit">Get Calendar</button></center>
     </form>
+    <center><button onclick="lifechartdisplay()" id="button" type="submit">Get Calendar</button></center>
     <link href="index.css" rel="stylesheet"/>
-</body>
+    <script src="./renderer.js"></script>
+  </body>
 </html>
