@@ -44,7 +44,7 @@ touch main.js
 ```
 Add the following to the `main.js` in order to test the working of electron app
 ```js
-console.log("Hello Electron!)
+console.log("Hello Electron!")
 ```
 
 5. lets configure the `scripts` in `package.json` to run our electron app
@@ -90,12 +90,14 @@ git add -A
 ```sh
 git commit -m "setting up the electron project"
 ```
+
 >**Best practice**:Always make your commit messages with clean and clear descriptions instead of using simple messages such as updating repository or update etc...
 
 7. Push the changes to the remote repository
 ```sh
 git push origin main
 ```
+
 ## log 2:-
 
 ## Configuring UI(User Interface):-
@@ -151,12 +153,14 @@ Rigth now I will give you an overview of the concepts that are used to create th
   </body>
 </html>
 ```
+
 >**Note**: The `style sheet(CSS)` is required to achieve the exact result that is provided by the life-calendar-widget App or you can use `Bootstrap`,`SCSS `,`SASS` or `TailwindCSS` based on your preference
 
 2. In order to display the UI we need to configure `main.js`.first we need to import the required modules from electron
 ```js
 import { app, BrowserWindow } = require("electron")
 ```
+
 next we need to create a `BrowserWindow` for our App
 ```js
 const createWindow=()=>{
@@ -171,17 +175,30 @@ const createWindow=()=>{
 win.loadFile("index.html)
 }
 ```
+
 Once our `BrowserWindow` is ready we need to call the `createWindow` function to implement it
 ```js
 app.whenReady().then((=>{
     createWindow()
 }))
 ```
+
 These are the basic configurations that we need to run the electron app in our desktop
 
 3. Since I am using Traditional web development methods I need to create a `Javascript` file for the functionality of the App
 ```sh
 touch renderer.js
 ```
+
 The name of the file can be anything according to your preferences but the logic file is named as `renderer.js` in the electron `docs` so i am following the same
 
+## log 3:-
+
+I was facing an error when I run my electron app which displays `object Nodelist` instead of the actual value recieved from the input of the form. It turns out that since i am using `getElementsbyName` which will return node list instead of the object
+
+solved the error by adding index value to the nodelist
+```js
+const age = document.getElementsbyName('age')[0].value;
+```
+
+but when I tried to use `getElementbyId` the electron app does nothing and I need to find out why because when I use `getElementsbyName` it works as expected without errors.
