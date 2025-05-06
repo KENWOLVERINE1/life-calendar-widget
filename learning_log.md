@@ -202,3 +202,230 @@ const age = document.getElementsbyName('age')[0].value;
 ```
 
 but when I tried to use `getElementbyId` the electron app does nothing and I need to find out why because when I use `getElementsbyName` it works as expected without errors.
+
+So after spending some time searching for the solution to the error I was facing before I found out that the elements were fetched before the `DOMcontents` were loaded and I found out how to solve the problem
+```js
+document.addEventListener("DOMContentLoaded",()=>{"function to be called or values to be fetched" })
+```
+by using the above code you can ensure that the `DOMcontents` were loaded before the values are fetched but since the `getElementById` doesn't satisfy my needs I decided to go with `getElementsbyName` 
+
+In order to create a life calendar which comprises of a table with lots of boxes just like a normal calendar but with functionality such as clickable and state changable etc... seems like a very big and complex task so I decided to break it down into small simpler tasks
+
+**Task 1:-**
+
+First I need to create a calendar with tables and there were a lot of methods and options to do so such as using `<Table>` element in html, `Pre-built templates`, `grid` and using `frameworks` etc... but we need to use one which is efficient at the same time it doesnt overkill the project so I decided to go with `gird`. If you are an experienced developer I know that you will think i made the right choice but for the starters I have to explain because they might have a doubt. so lets go through it one by one, at first we have the `<Table>` element from `HTML` this is not feasible because my calendar has more than 50 boxes and we need to create all of them manually so it is out of option. second, we have `pre-built templates` and we can use them and they are feasible but this project is all about gaining experience so, I cant use this.third, we have the `frameworks` obviously it would overkill the project because by the i spend setting up the project, I can complete it without the framework and last we have `grid` which is suitable and feasable in every way 
+
+I learned about `grid-templates` in css by refering the web and i fouund out some of the best go-to websites to learn or revise the concepts and I will share them here for you guys
+```
+https://www.joshwcomeau.com/css/interactive-guide-to-grid/
+```
+```
+https://learncssgrid.com/
+```
+I achieved `grid-emplate` by creating it entirely using `Javascript`. The reason i did it using Js because I dont want to create multiple `HTML` pages and make it look like a website inside a desktop widget so, I used one `HTML` page and updated it using `Js` with the help of `Eventhandling` and `Js DOM Manipulation` and I will add the code below for your reference
+
+```js
+const age=data.age;
+const totalBoxes = (80-age)*52;
+const rows = Math.ceil(totalBoxes/57);
+const calendar = document.createElement("ul");
+calendar.id="parent";
+calendar.style.listStyleType="none";
+calendar.style.display="grid";
+calendar.style.gridTemplateColumns="repeat(57,20px)";
+calendar.style.gridTemplateRows=`repeat(${rows},20px)`;
+//calendar.style.gridAutoRows = "20px";
+calendar.style.height="600px";
+calendar.style.width = "fit-content"; // ✅ Prevents extra space
+calendar.style.padding = "0";
+calendar.style.gap = "0"; // ✅ No gaps
+calendar.style.overflow = "hidden"; 
+calendar.style.marginRight="100px";
+```
+P.S. I made it dynamic by creating the rows based on user's input
+
+**Task 2:-**
+
+Now I need to create the child elements which should contain a state and a function to make it interactive and to remeber the action made. I achieved these using Js `localstorage` and `for` loop. I know you guys will think "local storage makes sense but why for loop?". Since i made the rows dynamic it has to be created based on user input hence i have used for loop to create the child elements for the input provided by the user
+
+```js
+const savedState = JSON.parse(localStorage.getItem("lifeCalendarBoxState")) || {};
+for(let i=1;i<=totalBoxes;i++){
+    //box element
+    const box = document.createElement("li");
+    box.id=`box-${i}`;
+    box.textContent="";
+    box.style.aspectRatio="1/1"
+    box.style.border="0.5px solid white";
+    //button inside box element
+    const button = document.createElement("button");
+    button.id=`button-${i}`;
+    button.style.border="none";
+    button.style.backgroundColor="rgb(36, 36, 36)";
+    button.style.width = "100%";
+    button.style.height = "100%";
+    button.style.border = "none";
+    button.style.color = "white";
+    button.style.fontSize = "10px";
+    button.style.fontFamily = "monospace"; 
+    button.style.cursor = "pointer";
+    button.style.display = "flex";
+    button.style.alignItems = "center";
+    button.style.justifyContent = "center";
+    button.style.boxSizing = "border-box";
+    button.style.lineHeight = "1";
+    button.textContent = savedState[`box-${i}`] ? "X" : "";
+    button.addEventListener("click", () => {
+        const key = `box-${i}`;
+        if (button.textContent === "X") {
+          button.textContent = "";
+          delete savedState[key];
+        } else {
+          button.textContent = "X";
+          savedState[key] = "X";
+        }
+        localStorage.setItem("lifeCalendarBoxState", JSON.stringify(savedState));
+      });
+
+    box.appendChild(button);
+    calendar.appendChild(box);
+}
+```
+
+**Task 3:-**
+
+Now i need to create a reset button in case the user had made a mistake or has a change of mind. What can i say "we're only human, after all". And I achieved this using the same old `Javascript`
+
+```js
+const resetBtn = document.createElement("button");
+resetBtn.id="button";
+resetBtn.textContent = "Reset Calendar";
+resetBtn.style.marginTop = "20px";
+resetBtn.addEventListener("click", () => {
+    localStorage.removeItem("lifeCalendarFormData");
+    for (let i = 1; i <= (80 - age) * 52; i++) {
+        localStorage.removeItem(`box-${i}`);
+    }
+    location.reload();
+});
+document.body.appendChild(resetBtn);
+```
+so far so good.now all that's left is to create the identity statement which was inspired from the `Atomic Habits` and this can be done easily because it's just plain text with some dynamic data or should i say user's input
+
+```js
+const identityLine1=data.identityLine1;
+const identityLine2=data.identityLine2;
+const identityLine3=data.identityLine3;
+const timecommit=data.timecommit;
+const timeofday=data.timeofday
+const goal=data.goal;
+
+const headingText = document.createElement("h2")
+headingText.textContent=`I am the kind of person who does ${identityLine1}, because I value ${identityLine2} and want to become ${identityLine3}`
+
+const subheadingText = document.createElement("h4")
+subheadingText.textContent=`Daily System: ${timeofday}, ${goal} for ${timecommit} hour/hours`
+ document.body.appendChild(headingText);
+ document.body.appendChild(subheadingText);
+ ```
+
+## log 4:-
+
+## Bundling the project as a distributable:-
+
+Now electron doesn't have any tools for packaging and bundling in it's default core modules so, we need to install additional tools to create a packaged app that we can distribute to users either as a installer(MSI on windows) or portable executable file(.app on mac os) or as packages(snap,RPM,deb for multiple linux environments)
+
+There are two ways to build the electron application by using `electron-forge` and `electron-builder`. I am going to use `electron-forge` since it is easy to create a bundle and it's is used in the official Docs but feel free to use what you prefer.
+
+## Importing project inside forge:-
+
+First we need to install forge and then import our project inside it
+```sh
+npm install --save-dev @electron-forge/cli
+npx electron-forge import
+```
+
+Once we run the `electron-forge` there will be few scripts added to our `package.json`
+```json
+ //...
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  //...
+```
+
+we can also see that few more packages are added under our dev dependencies and a new file named forge.config.js has been created.
+
+## Creating a distributable:-
+
+>**Note**: Since i am using fedora linux environment i will be making the distributable for RPM(Redhat Package Manager) but you guys can create your own distributable suitable to your environment or your targeted environment
+
+Before we create a RPM package of our electron App we need to satisfy few requirements 
+
+# Requirements:-
+
+fist we need to install rpm-build to create a RPM package
+
+If you are using a fedora environment
+```sh
+sudo dnf install rpm-build
+```
+if you are using debian or ubuntu
+```sh
+sudo apt-get insatll rpm
+```
+
+# Installation:-
+
+```sh
+npm install --save-dev @electron-forge/maker-rpm
+```
+
+# Usage:-
+
+To use `@electron-forge/maker-rpm` we need to add it to our `forge.config.js` file under `makers`
+
+```js
+module.exports = {
+  makers: [
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {
+        options: {
+          name:"life-calendar-widget",
+          version:"1.0.0";
+          license:"MIT";
+        }
+      }
+    }
+  ]
+};
+```
+# Create the distributable:-
+
+```sh
+npm run make
+```
+THis command executes two steps namely 
+1. `electron-forge package` under the hood to bundle our app in `electron binary` and generate the packaged code into a folder
+2. Then it will used the packaged app folder to create seperate distributables for each configured makers.
+
+>**Note**: You can have multiple makers inside the forge.config.js file to support all the targeted environments
+
+The distributable will be located under `out/make` folder ready to launch!
+
+And hence we have created our electron app successfully and created a distribuable file for other users as well
+
+
+
+
+
+
+
+
+
+
+
+
